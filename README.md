@@ -1,4 +1,4 @@
 # NetflixRemake
 
-A java project based on the Netflix app
+A java project based on the Netflix app - JAVA
 
