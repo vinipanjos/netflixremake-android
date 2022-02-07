@@ -1,0 +1,11 @@
+[33mcommit f1940469fcfe31d424551ea93ede3fff3adf4ebb[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: vinipanjos <vinipanjos@hotmail.com>
+Date:   Sun Feb 6 21:12:49 2022 -0300
+
+    Inserting a toolbar, defining the dimension and setting a button to return
+
+[33mcommit 4075e1cfa24b1811a09f7804986007a990680d40[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: vinipanjos <vinipanjos@hotmail.com>
+Date:   Wed Feb 2 20:27:18 2022 -0300
+
+    I started the project, implemented a recycler view inside a recycler view, configured the layout and the first screen of the application in the code-logic in MainActivity
