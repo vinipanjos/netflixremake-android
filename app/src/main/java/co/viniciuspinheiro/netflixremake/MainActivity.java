@@ -16,8 +16,10 @@ import java.util.List;
 
 import co.viniciuspinheiro.netflixremake.model.Category;
 import co.viniciuspinheiro.netflixremake.model.Movie;
+import co.viniciuspinheiro.netflixremake.util.CategoryTask;
+import co.viniciuspinheiro.netflixremake.util.ImageDownloaderTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CategoryTask.CategoryLoader {
 
     private MainAdapter mainAdapter;
 
@@ -29,23 +31,19 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_main);
 
         List<Category> categories = new ArrayList<>();
-        for (int j = 0; j < 10; j++) {
-            Category category = new Category();
-            category.setName("Categoria " + (j+1));
 
-            List<Movie> movies = new ArrayList<>();
-            for (int i = 0; i < 30; i++) {
-                Movie movie = new Movie();
-                //movie.setCoverUrl(R.drawable.movie);
-                movies.add(movie);
-            }
-            category.setMovies(movies);
-            categories.add(category);
-        }
         mainAdapter = new MainAdapter(categories);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mainAdapter);
 
+        CategoryTask categoryTask = new CategoryTask(this);
+        categoryTask.setCategoryLoader(this);
+        categoryTask.execute("https://tiagoaguiar.co/api/netflix/home");
+    }
+    @Override
+    public void onResult(List<Category> categories) {
+        mainAdapter.setCategories(categories);
+        mainAdapter.notifyDataSetChanged();
     }
 
     static class MovieHolder extends RecyclerView.ViewHolder {
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class MainAdapter extends RecyclerView.Adapter<CategoryHolder> {
 
-        private final List<Category> categories;
+        private List<Category> categories;
 
         private MainAdapter(List<Category> categories) {
             this.categories = categories;
@@ -96,11 +94,16 @@ public class MainActivity extends AppCompatActivity {
         public int getItemCount() {
             return categories.size();
         }
+
+        void setCategories(List<Category> categories) {
+            this.categories.clear();
+            this.categories.addAll(categories);
+        }
     }
 
     private class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
 
-        private final List<Movie> movies;
+        private List<Movie> movies;
 
         private MovieAdapter(List<Movie> movies) {
             this.movies = movies;
@@ -115,12 +118,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
             Movie movie = movies.get(position);
-          //  holder.imageViewCover.setImageResource(movie.getCoverUrl());
+            new ImageDownloaderTask(holder.imageViewCover).execute(movie.getCoverUrl());
         }
 
         @Override
         public int getItemCount() {
             return movies.size();
         }
+
     }
 }
