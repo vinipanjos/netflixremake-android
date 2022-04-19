@@ -1,4 +1,3 @@
 # NetflixRemake-ANDROID-JAVA
 
-A java project based on the Netflix app - JAVA
-
+Uma copia do aplicativo Netflix para fins didaticos, utilizando API rest, multiplas telas, recyclerview, entre outras tecnologias.
